@@ -4,15 +4,11 @@ window.onload = function(){
     let section = document.getElementsByTagName("section")[0];
     document.getElementById("rechercheWiki").placeholder = "Reinventing the wheel";
     document.getElementById("rechercheWiki").value = "";
+    let previousSearch = "";
 
     let lanceRequete = function(){
         let timeTillExecution = 2000;
         setTimeout(function(){
-
-            //Removes the previous searches
-            if (section.firstChild){
-                section.removeChild(section.firstChild);
-            }
 
             let mainContainer = document.createElement("div");
 
@@ -20,11 +16,16 @@ window.onload = function(){
             let request = new XMLHttpRequest();
             let URL = "https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=";
             let textRequete = document.getElementById("rechercheWiki").value;
-            if (textRequete!=""){
+            if (textRequete != "" && textRequete != previousSearch){
+
+                //Removes the previous searches
+                if (section.firstChild){
+                    section.removeChild(section.firstChild);
+                }
                 request.open("GET",URL+textRequete,true);
                 console.log(textRequete);
                 request.onload=function(e){
-                    console.log(request.readyState + " "+ request.status)
+                    console.log(request.readyState + " " + request.status)
                     if (request.readyState === 4) {
                         if (request.status === 200) {
                             let data = JSON.parse(request.responseText);
@@ -53,6 +54,7 @@ window.onload = function(){
                     section.innerText="Erreur durant la recherche, vérifiez votre connexion internet";
                 }
                 request.send();
+                previousSearch = textRequete;
                 
                 }
             },timeTillExecution);
