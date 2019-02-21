@@ -5,8 +5,7 @@ window.onload = function(){
     document.getElementById("rechercheWiki").placeholder = "Reinventing the wheel";
     document.getElementById("rechercheWiki").value = "";
     let previousSearch = " ";
-    let textRequete = document.getElementById("rechercheWiki").value;
-
+    let textRequete = "";
     let lanceRequete = function(){
         let timeTillExecution = 2000;
         setTimeout(function(){
@@ -17,8 +16,9 @@ window.onload = function(){
             //Create the XHR 
             let request = new XMLHttpRequest();
             let URL = "https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=";
-            textRequete = document.getElementById("rechercheWiki").value;
-            if (textRequete != "" && textRequete != previousSearch){
+            textRequete = encodeURIComponent( document.getElementById("rechercheWiki").value);
+            //this if prevents multiple requests with the same value or empty ones
+            if (textRequete != "" && textRequete != previousSearch ){
 
                 //Removes the previous searches
                 if (section.firstChild){
@@ -28,6 +28,7 @@ window.onload = function(){
                 console.log(textRequete);
                 request.onload=function(e){
                     console.log(textRequete +" "+ previousSearch)
+                    //This if prevents the de-sync between user input and data output(somehow)
                     if (textRequete != "" && textRequete != previousSearch){
                         console.log(request.readyState + " " + request.status)
                         if (request.readyState === 4) {
