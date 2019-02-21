@@ -11,6 +11,7 @@ window.onload = function(){
         setTimeout(function(){
 
             let mainContainer = document.createElement("div");
+            mainContainer.className="row";
 
             //Create the XHR 
             let request = new XMLHttpRequest();
@@ -34,18 +35,24 @@ window.onload = function(){
                             for(i=0;i<data[1].length;i++){
 
                                 mainContainer.id= data[0];
+                                let individualDivs = document.createElement("div");
+                                let marginer = document.createElement("div");
                                 let title = document.createElement("h2");
                                 let text = document.createElement("p");
                                 let link = document.createElement("a");
 
-                                title.innerText = data[1][i];
+                                marginer.className = "marginer";
+                                individualDivs.className = "col-12 col-sm-12 col-md-6 col-lg-6";
+                                link.innerText = data[1][i];
                                 text.innerText = data[2][i];
                                 link.href = data[3][i];
 
                                 section.appendChild(mainContainer);
-                                mainContainer.appendChild(link);
-                                link.appendChild(title);
-                                mainContainer.appendChild(text);
+                                mainContainer.appendChild(individualDivs);
+                                individualDivs.appendChild(marginer)
+                                marginer.appendChild(title)
+                                title.appendChild(link);
+                                marginer.appendChild(text);
                             }
                         }
                     }
